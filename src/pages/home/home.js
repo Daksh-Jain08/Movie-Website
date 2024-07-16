@@ -17,10 +17,15 @@ const Home = (props) => {
     setPopularMovies(data.results);
   };
 
-
   useEffect(() => {
     getMovies();
   }, []);
+
+  const addFavouriteMovie = (movie) => {
+    const newFavouriteList = [...props.favourites, movie];
+    props.setFavourites(newFavouriteList);
+  };
+
   return (
     <>
       <div className="poster">
@@ -61,7 +66,12 @@ const Home = (props) => {
             </Link>
           ))}
         </Carousel>
-        <MovieList searchValue={props.searchValue} setSearchValue={props.setSearchValue} />
+        <MovieList
+          searchValue={props.searchValue}
+          handleFavouriteClick={addFavouriteMovie}
+          setSearchValue={props.setSearchValue}
+          favourites={props.favourites}
+        />
       </div>
     </>
   );

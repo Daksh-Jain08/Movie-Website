@@ -3,7 +3,7 @@ import "./card.css";
 import { Link } from "react-router-dom";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
-const Cards = ({ movie }) => {
+const Cards = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -21,31 +21,37 @@ const Cards = ({ movie }) => {
           </SkeletonTheme>
         </div>
       ) : (
-        <Link
-          to={`/movie/${movie.id}`}
-          style={{ textDecoration: "none", color: "white" }}
-        >
-          <div className="cards">
+        <div className="cards">
+          <Link
+            to={`/movie/${props.movie.id}`}
+            style={{ textDecoration: "none", color: "white" }}
+          >
             <img
               className="cards__image"
-              src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-              alt={movie.title}
+              src={`https://image.tmdb.org/t/p/original/${props.movie.poster_path}`}
+              alt={props.movie.title}
             />
             <div className="cards__overlay">
-              <div className="cards__title">{movie ? movie.title : ""}</div>
+              <div className="cards__title">
+                {props.movie ? props.movie.title : ""}
+              </div>
               <div className="cards__runtime">
-                {movie ? movie.release_date : ""}
+                {props.movie ? props.movie.release_date : ""}
                 <div className="cards__rating">
-                  {movie ? movie.vote_average : ""}
+                  {props.movie ? props.movie.vote_average : ""}
                   <i className="fas fa-star" />{" "}
                 </div>
               </div>
               <div className="cards__description">
-                {movie ? movie.overview.slice(0, 118) + "..." : ""}
+                {props.movie ? props.movie.overview.slice(0, 118) + "..." : ""}
               </div>
             </div>
-          </div>
-        </Link>
+          </Link>
+          <props.AddFavourite
+            handleFavouriteMovie={props.handleFavouriteMovie}
+            movie={props.movie}
+          />
+        </div>
       )}
     </>
   );

@@ -35,6 +35,13 @@ const Header = (props) => {
         >
           <span>Upcoming</span>
         </Link>
+        <Link
+          to="/movies/favourites"
+          onClick={handleClick}
+          style={{ textDecoration: "none" }}
+        >
+          <span>Favourites</span>
+        </Link>
       </div>
       <div className="header__right">
         <SearchBox

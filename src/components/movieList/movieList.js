@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import "./movieList.css";
 import Cards from "../card/card";
-import { useParams } from "react-router-dom";
-import axios from "axios";
+import { useParams, useLocation } from "react-router-dom";
 import api from "../api";
+import AddFavourite from "../addFavourite/addFavourite";
 
 const MovieList = (props) => {
-  const apiKey = process.env.REACT_APP_API_KEY;
-
   const [movieList, setMovieList] = useState([]);
   const { type } = useParams();
   const [error, setError] = useState(null);
+  const pathname = useLocation().pathname;
 
   useEffect(() => {
     getData();
@@ -21,9 +20,17 @@ const MovieList = (props) => {
   }, [type]);
 
   useEffect(() => {
+    if (pathname === "/movies/favourites") {
+      setMovieList(props.favourites);
+    }
+  }, [props.favourites]);
+
+  useEffect(() => {
     if (props.searchValue !== "") {
       console.log("searching");
       searchMovie();
+    } else if (pathname === "/movies/favourites") {
+      setMovieList(props.favourites);
     } else {
       getData();
     }
@@ -63,16 +70,26 @@ const MovieList = (props) => {
     }
   };
 
+  const heading = () => {
+    if (props.searchValue !== "") {
+      return "Search for '" + props.searchValue + "'";
+    } else {
+      return (type ? type : "POPULAR").toUpperCase();
+    }
+  }
+
   return (
     <div className="movie__list">
       <h2 className="list__title">
-        {props.searchValue !== ""
-          ? "Search for '" + props.searchValue + "'"
-          : (type ? type : "POPULAR").toUpperCase()}
+        {error ? "Error fetching data" : heading()}
       </h2>
       <div className="list__cards">
         {movieList.map((movie) => (
-          <Cards movie={movie} />
+          <Cards
+            movie={movie}
+            handleFavouriteMovie={props.handleFavouriteClick}
+            AddFavourite={AddFavourite}
+          />
         ))}
       </div>
     </div>
