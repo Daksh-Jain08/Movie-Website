@@ -1,0 +1,22 @@
+.header__search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid white;
+  border-radius: 40px;
+  padding: 0.5rem;
+  height: 40px;
+  width: 250px;
+}
+
+.header__searchInput {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background-color: transparent;
+  color: white;
+}
+
+.header__search > input::placeholder {
+  color: grey;
+}
