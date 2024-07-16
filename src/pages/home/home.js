@@ -4,16 +4,19 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { Link } from "react-router-dom";
 import MovieList from "../../components/movieList/movieList";
+import api from "../../components/api";
 
-const apiKey = process.env.REACT_APP_API_KEY;
 
 const Home = (props) => {
   const [popularMovies, setPopularMovies] = useState([]);
 
   const getMovies = async () => {
-    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}&language=en-US&page=1`;
-    const response = await fetch(url);
-    const data = await response.json();
+    const response = await api.get("/movie/popular", {
+      params: {
+        page: 1,
+      },
+    });
+    const data = await response.data;
     setPopularMovies(data.results);
   };
 
